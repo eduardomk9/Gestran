@@ -9,21 +9,36 @@ namespace Application.Business
 {
     public class InspectionBusiness(
          IMapper mapper,
-         IGenericEnterpriseRepository<GeInspection> repositoryInspection, 
+         IGenericEnterpriseRepository<GeInspection> repositoryInspection,
          IGenericEnterpriseRepository<GeInspectionDetail> repositoryInspectionDetail,
-         IGenericEnterpriseRepository<GeUser> repositoryUser
+         IGenericEnterpriseRepository<GeUser> repositoryUser,
+         IGenericEnterpriseRepository<GeVehicle> repositoryVehicle
          ) : IInspectionBusiness
     {
         private readonly IMapper _mapper = mapper;
         private readonly IGenericEnterpriseRepository<GeInspection> _repositoryInspection = repositoryInspection;
         private readonly IGenericEnterpriseRepository<GeInspectionDetail> _repositoryInspectionDetail = repositoryInspectionDetail;
         private readonly IGenericEnterpriseRepository<GeUser> _repositoryUser = repositoryUser;
+        private readonly IGenericEnterpriseRepository<GeVehicle> _repositoryVehicle = repositoryVehicle;
 
-        public async Task<bool> CreateInspectionAsync(InspectionDTO inspectionDTO) {
+        public async Task<bool> CreateInspectionAsync(InspectionDTO inspectionDTO)
+        {
             try
             {
-                GeInspection geInspection = _mapper.Map<GeInspection>(inspectionDTO);
-                int result = await _repositoryInspection.Create(geInspection);
+                int result = 0;
+                GeVehicle? geVehicle = await _repositoryVehicle.GetById(inspectionDTO.VehicleId ?? 0);
+
+                if (geVehicle != null)
+                {
+
+                    if (geVehicle.IsBeingInspected == false)
+                    {
+                        geVehicle.IsBeingInspected = true;
+                        GeInspection geInspection = _mapper.Map<GeInspection>(inspectionDTO);
+                        GeVehicle updateResult = await _repositoryVehicle.Update(geVehicle);
+                        result = await _repositoryInspection.Create(geInspection);
+                    }
+                }
 
                 return result == 1;
             }
@@ -56,7 +71,8 @@ namespace Application.Business
                 GeUser? geUser = await _repositoryUser.GetById(approveOrRejectDTO.IdUser) ?? new();
 
                 string jobTitleUser = geUser.JobTitleUser ?? "";
-                if (jobTitleUser.ToLower().Equals("supervisor")) {
+                if (jobTitleUser.ToLower().Equals("supervisor"))
+                {
                     GeInspection? geInspection = await _repositoryInspection.GetById(approveOrRejectDTO.IdInspection);
                     if (geInspection != null)
                     {
@@ -65,12 +81,17 @@ namespace Application.Business
                         geInspection.Comment += $"\n[{geUser.FirstNameUser}]" +
                                                 $"\n{approveOrRejectDTO.Comment}";
                         GeInspection geInspecUpdResult = await _repositoryInspection.Update(geInspection);
+                        GeVehicle? geVehicle = await _repositoryVehicle.GetById(geInspection.VehicleId ?? 0);
                         if (geInspecUpdResult.InspectionId > 0)
                         {
-                            result = true;
+                            if (geVehicle != null)
+                            {
+                                geVehicle.IsBeingInspected = false;
+                                GeVehicle updateResult = await _repositoryVehicle.Update(geVehicle);
+                                result = true;
+                            }
                         }
                     }
-                   
                 }
 
                 return result;
@@ -86,7 +107,7 @@ namespace Application.Business
             {
 
                 int insDetails = await _repositoryInspectionDetail.Delete(x => x.InspectionId == idinspection);
-               
+
                 int ins = await _repositoryInspection.Delete(x => x.InspectionId == idinspection);
 
                 return $"{ins} Inspections affecteds and {insDetails} Details affecteds";
