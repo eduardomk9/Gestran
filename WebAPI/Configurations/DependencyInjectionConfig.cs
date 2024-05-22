@@ -3,6 +3,7 @@ using Application.Business;
 using Core.Business;
 using Core.Repositories;
 using Core.Services;
+using Core.Utils;
 using Infrastructure.Persistence.Contexts;
 using Infrastructure.Persistence.Repositories;
 using Infrastructure.Services;
@@ -28,7 +29,7 @@ namespace WebAPI.Configurations
         {
             #region Configure Services     
 
-            //CryptoUtils.Initialize(configuration);
+            CryptoUtils.Initialize(configuration);
 
             services.AddDbContext<GenericEnterpriseContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("GenericEnterpise")));
@@ -86,7 +87,7 @@ namespace WebAPI.Configurations
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Clients API",
+                    Title = "Gestran API",
                     Description = "Developed by Francisco Holanda",
                     Contact = new OpenApiContact { Name = "Francisco", Email = "eduardoeprf@hotmail.com" },
                     License = new OpenApiLicense { Name = "Francisco", Url = new Uri("https://www.linkedin.com/in/francisco-eduardo-machado-de-holanda-244a22171/") }
@@ -134,7 +135,9 @@ namespace WebAPI.Configurations
                     Type[] includedControllers =
                     [
                      typeof(AuthController),
-                     typeof(BookController)
+                     typeof(VehicleController),
+                     typeof(UserController),
+                     typeof(InspectionController)
                     ];
                     // Verifica se o controlador atual está na lista de controladores incluídos
                     bool isControllerIncluded = includedControllers.Contains(methodInfo.DeclaringType);
@@ -170,7 +173,11 @@ namespace WebAPI.Configurations
 
             //Business           
             services.AddScoped<IAuthBusiness, AuthBusiness>();
-            services.AddScoped<IBookBusiness, BookBusiness>();
+            services.AddScoped<IUserBusiness, UserBusiness>();
+            services.AddScoped<IInspectionBusiness, InspectionBusiness>();
+
+
+            services.AddScoped<IVehicleBusiness, VehicleBusiness>();
 
             //Configs        
             services.AddAutoMapper(typeof(AutoMapperConfig).Assembly);

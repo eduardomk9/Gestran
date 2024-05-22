@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
+﻿using Core.Entities.GenericEnterpise;
+using Microsoft.EntityFrameworkCore.Storage;
 using System.Linq.Expressions;
 
 namespace Core.Repositories
@@ -25,5 +26,6 @@ namespace Core.Repositories
         Task UpdateRange(IEnumerable<T> entities);
         Task<IDbContextTransaction> BeginTransaction();
         Task<List<T>> CreateRangeEntities(List<T> entities);
+        Task<int> CreateNotTracked(GeInspectableType entity);
     }
 }

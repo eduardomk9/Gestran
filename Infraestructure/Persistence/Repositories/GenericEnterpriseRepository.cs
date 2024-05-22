@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 
 using Core.Repositories;
 using Infrastructure.Persistence.Contexts;
+using Core.Entities.GenericEnterpise;
 
 namespace Infrastructure.Persistence.Repositories
 {
@@ -37,6 +38,15 @@ namespace Infrastructure.Persistence.Repositories
         {
             await _dbSet.AddAsync(entity);
             return await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<int> CreateNotTracked(GeInspectableType entity)
+        {
+            var sql = @$"
+        INSERT INTO GE_InspectableType (InspectableId, VehicleTypeId)
+        VALUES ({entity.InspectableId}, {entity.VehicleTypeId})";
+
+            return await _dbContext.Database.ExecuteSqlRawAsync(sql);
         }
 
         public async Task<T> CreateScope(T entity)
