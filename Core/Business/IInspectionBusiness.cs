@@ -8,6 +8,6 @@ namespace Core.Business
         Task<bool> ApproveOrRejectInspectionAsync(ApproveOrRejectDTO approveOrRejectDTO);
         Task<bool> CreateInspectionAsync(InspectionDTO inspectionDTO);
         Task<bool> CreateInspectionDetailAsync(InspectionDetailDTO inspectionDTO);
-        Task<string> DeleteInspection(int idinspection);
+        Task<string> DeleteInspectionAsync(int idinspection);
     }
 }

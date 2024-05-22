@@ -4,6 +4,6 @@ namespace Core.Business
 {
     public interface IAuthBusiness
     {
-        SignInResponseDto SignIn(SignInDto model);
+        Task<SignInResponseDto> SignInAsync(SignInDto model);
     }
 }

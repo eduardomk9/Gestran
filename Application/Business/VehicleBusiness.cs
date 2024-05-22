@@ -20,7 +20,8 @@ namespace Application.Business
         private readonly IGenericEnterpriseRepository<GeInspectable> _repositoryInspectable = repositoryInspectable;
         private readonly IGenericEnterpriseRepository<GeInspectableType> _repositoryInspectableType = repositoryInspectableType;
 
-        public async Task<bool> CreateVehicleTypeAsync(VehicleTypeDTO vehicleTypeDTO) {
+        public async Task<bool> CreateVehicleTypeAsync(VehicleTypeDTO vehicleTypeDTO)
+        {
             try
             {
                 GeVehicleType geVehicleType = _mapper.Map<GeVehicleType>(vehicleTypeDTO);
@@ -121,6 +122,61 @@ namespace Application.Business
             catch (Exception ex)
             {
                 throw new Exception($"VehicleBusiness | CreateRelationInspectableVehicleTypeAsync | {ex.Message}");
+            }
+        }
+
+        public async Task<string> DeleteVehicleTypeAsync(int idVehicleType)
+        {
+            try
+            {
+                int vtypeRelations = 0;
+                int vtype = 0;
+                IEnumerable<GeVehicle> geVehicles = await _repositoryVehicle.GetAll(x => x.VehicleTypeId == idVehicleType);
+                if (geVehicles.Count() == 0)
+                {
+                    vtypeRelations = await _repositoryInspectableType.Delete(x => x.VehicleTypeId == idVehicleType);
+                    vtype = await _repositoryVehicleType.Delete(x => x.VehicleTypeId == idVehicleType);
+                }
+                else
+                {
+                    return $"There are Vehicles for this type, no Types were affected";
+
+                }
+                return $"{vtype} Vehicle Type affecteds and {vtypeRelations} Relations affecteds";
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"InspectionBusiness | ApproveOrRejectInspectionAsync | {ex.Message}");
+            }
+        }
+
+        public async Task<string> DeleteVehicleAsync(int idVehicle)
+        {
+            try
+            {
+
+                int vehicle = await _repositoryVehicle.Delete(x => x.VehicleId == idVehicle);
+
+                return $"{vehicle} Vehicles affecteds";
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"InspectionBusiness | ApproveOrRejectInspectionAsync | {ex.Message}");
+            }
+        }
+
+        public async Task<string> DeleteInspectableAsync(int idInspectable)
+        {
+            try
+            {
+
+                int inspectable = await _repositoryInspectable.Delete(x => x.InspectableId == idInspectable);
+
+                return $"{inspectable} Inspectable affecteds";
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"InspectionBusiness | ApproveOrRejectInspectionAsync | {ex.Message}");
             }
         }
 

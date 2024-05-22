@@ -118,20 +118,20 @@ namespace WebAPI.Controllers
         /// Fill correctly all parameters to call this method.
         /// 
         /// </remarks>
-        /// <param name="model">Modelo de entrada</param>
-        [HttpDelete("DeleteInspection")]
+        /// <param name="id">Modelo de entrada</param>
+        [HttpDelete("DeleteInspectionAsync")]
         [SwaggerResponse(200, "Informações", typeof(string))]
         [SwaggerResponse(400, "Erro", typeof(string))]
-        public async Task<IActionResult> DeleteInspection(int model)
+        public async Task<IActionResult> DeleteInspectionAsync(int id)
         {
             try
             {
-                string result = await _InspectionBusiness.DeleteInspection(model);
+                string result = await _InspectionBusiness.DeleteInspectionAsync(id);
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                return BadRequest($"InspectionController | DeleteInspection | {ex.Message}");
+                return BadRequest($"InspectionController | DeleteInspectionAsync | {ex.Message}");
             }
         }
 

@@ -100,7 +100,7 @@ namespace Application.Business
                 throw new Exception($"InspectionBusiness | ApproveOrRejectInspectionAsync | {ex.Message}");
             }
         }
-        public async Task<string> DeleteInspection(int idinspection)
+        public async Task<string> DeleteInspectionAsync(int idinspection)
         {
             try
             {

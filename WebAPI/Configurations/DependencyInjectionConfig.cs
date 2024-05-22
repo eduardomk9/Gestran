@@ -32,7 +32,10 @@ namespace WebAPI.Configurations
             CryptoUtils.Initialize(configuration);
 
             services.AddDbContext<GenericEnterpriseContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("GenericEnterpise")));
+            options.UseSqlServer(configuration.GetConnectionString("GenericEnterpise")),
+            ServiceLifetime.Scoped);
+            //services.AddDbContext<GenericEnterpriseContext>(options =>
+            //options.UseSqlServer(configuration.GetConnectionString("GenericEnterpise")));
 
 
             // Configuração da autenticação personalizada como esquema padrão

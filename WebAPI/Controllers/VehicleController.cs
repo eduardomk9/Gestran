@@ -1,4 +1,5 @@
-﻿using Core.Business;
+﻿using Application.Business;
+using Core.Business;
 using Core.DTOs.Vehicle;
 using Core.Entities.GenericEnterpise;
 using Microsoft.AspNetCore.Authorization;
@@ -230,6 +231,97 @@ namespace WebAPI.Controllers
             catch (Exception ex)
             {
                 return BadRequest($"VehicleController | CreateRelationInspectableVehicleTypeAsync | {ex.Message}");
+            }
+        }
+
+
+        /// <summary>
+        /// Delete a Vehicle
+        /// </summary>
+        /// <remarks>
+        /// This dont method allow anonymous.
+        /// 
+        /// You have to call this method with a token in the header.
+        /// 
+        /// You can call this method to Delete a Vehicle
+        /// 
+        /// Fill correctly all parameters to call this method.
+        /// 
+        /// </remarks>
+        /// <param name="id">Modelo de entrada</param>
+        [HttpDelete("DeleteVehicleAsync")]
+        [SwaggerResponse(200, "Informações", typeof(string))]
+        [SwaggerResponse(400, "Erro", typeof(string))]
+        public async Task<IActionResult> DeleteVehicleAsync(int id)
+        {
+            try
+            {
+                string result = await _vehicleBusiness.DeleteVehicleAsync(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"InspectionController | DeleteVehicleAsync | {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Delete a Vehicle Type and Relations to Inspectables
+        /// </summary>
+        /// <remarks>
+        /// This dont method allow anonymous.
+        /// 
+        /// You have to call this method with a token in the header.
+        /// 
+        /// You can call this method to Delete a Vehicle and theis relations to inspectables
+        /// 
+        /// Fill correctly all parameters to call this method.
+        /// 
+        /// </remarks>
+        /// <param name="id">Modelo de entrada</param>
+        [HttpDelete("DeleteVehicleTypeAsync")]
+        [SwaggerResponse(200, "Informações", typeof(string))]
+        [SwaggerResponse(400, "Erro", typeof(string))]
+        public async Task<IActionResult> DeleteVehicleTypeAsync(int id)
+        {
+            try
+            {
+                string result = await _vehicleBusiness.DeleteVehicleTypeAsync(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"InspectionController | DeleteVehicleAsync | {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Delete a Inspectable
+        /// </summary>
+        /// <remarks>
+        /// This dont method allow anonymous.
+        /// 
+        /// You have to call this method with a token in the header.
+        /// 
+        /// You can call this method to Delete a Inspectable
+        /// 
+        /// Fill correctly all parameters to call this method.
+        /// 
+        /// </remarks>
+        /// <param name="id">Modelo de entrada</param>
+        [HttpDelete("DeleteInspectableAsync")]
+        [SwaggerResponse(200, "Informações", typeof(string))]
+        [SwaggerResponse(400, "Erro", typeof(string))]
+        public async Task<IActionResult> DeleteInspectableAsync(int id)
+        {
+            try
+            {
+                string result = await _vehicleBusiness.DeleteInspectableAsync(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"InspectionController | DeleteInspectableAsync | {ex.Message}");
             }
         }
 

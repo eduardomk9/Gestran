@@ -10,7 +10,7 @@ namespace WebAPI.Controllers
     [Authorize("Bearer")]
     [Authorize(AuthenticationSchemes = "CustomAuth")]
     [Route("[controller]")]
-    [Tags("Utilizadores")]
+    [Tags("User")]
     [ApiController]
     public class UserController(IUserBusiness userBusiness) : ControllerBase
     {

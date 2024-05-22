@@ -9,7 +9,7 @@ namespace WebApi.Controllers
     [Authorize("Bearer")]
     [Authorize(AuthenticationSchemes = "CustomAuth")]
     [Route("[controller]")]
-    [Tags("Authenticação")]
+    [Tags("Auth")]
     [ApiController]
     public class AuthController(IAuthBusiness authBusiness) : ControllerBase
     {
@@ -32,11 +32,11 @@ namespace WebApi.Controllers
         [HttpPost("SignIn")]
         [SwaggerResponse(200, "Informações", typeof(SignInResponseDto))]
         [SwaggerResponse(400, "Erro", typeof(string))]
-        public IActionResult SignInAsync([FromBody] SignInDto model)
+        public async Task<IActionResult> SignInAsync([FromBody] SignInDto model)
         {
             try
             {
-                return Ok(_authBusiness.SignIn(model));
+                return Ok(await _authBusiness.SignInAsync(model));
             }
             catch (Exception ex)
             {

@@ -10,6 +10,9 @@ namespace Core.Business
         Task<bool> CreateRelationInspectableVehicleTypeAsync(RelationInspectableVehicleTypeDTO relationInspectableVehicleTypeDTOs);
         Task<bool> CreateVehicleAsync(VehicleDTO vehicleDTO);
         Task<bool> CreateVehicleTypeAsync(VehicleTypeDTO geVehicleType);
+        Task<string> DeleteInspectableAsync(int idInspectable);
+        Task<string> DeleteVehicleAsync(int idVehicle);
+        Task<string> DeleteVehicleTypeAsync(int idVehicleType);
         Task<IEnumerable<GeInspectable>> GetAllInspectableAsync();
         Task<IEnumerable<GeVehicle>> GetAllVehicleAsync();
         Task<IEnumerable<GeVehicleType>> GetAllVehicleTypeAsync();
