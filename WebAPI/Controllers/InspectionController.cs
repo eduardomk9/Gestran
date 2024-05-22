@@ -1,7 +1,5 @@
 ﻿using Core.Business;
 using Core.DTOs.Inspection;
-using Core.DTOs.Vehicle;
-using Core.Entities.GenericEnterpise;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
