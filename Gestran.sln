@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestsBusinessAPI", "TestsBusinessAPI\TestsBusinessAPI.csproj", "{DDDF44C5-2250-43DE-9D8E-0D2BDEC4E77D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{99A15F17-B7B3-4172-B8AF-FE9927DBC2E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99A15F17-B7B3-4172-B8AF-FE9927DBC2E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99A15F17-B7B3-4172-B8AF-FE9927DBC2E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDDF44C5-2250-43DE-9D8E-0D2BDEC4E77D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDDF44C5-2250-43DE-9D8E-0D2BDEC4E77D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDDF44C5-2250-43DE-9D8E-0D2BDEC4E77D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDDF44C5-2250-43DE-9D8E-0D2BDEC4E77D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,6 +57,7 @@ Global
 		{2AE991D4-9CE6-4142-990A-CBD63618B82A} = {6963DB01-8E35-43BC-A98F-F9CC2785F886}
 		{69CA49CE-DB97-4139-B38E-8C7F72F96F61} = {6963DB01-8E35-43BC-A98F-F9CC2785F886}
 		{99A15F17-B7B3-4172-B8AF-FE9927DBC2E3} = {6963DB01-8E35-43BC-A98F-F9CC2785F886}
+		{DDDF44C5-2250-43DE-9D8E-0D2BDEC4E77D} = {6963DB01-8E35-43BC-A98F-F9CC2785F886}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {20B46701-D73E-44AB-81FB-E4618BBAF93C}

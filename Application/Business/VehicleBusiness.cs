@@ -132,7 +132,7 @@ namespace Application.Business
                 int vtypeRelations = 0;
                 int vtype = 0;
                 IEnumerable<GeVehicle> geVehicles = await _repositoryVehicle.GetAll(x => x.VehicleTypeId == idVehicleType);
-                if (geVehicles.Count() == 0)
+                if (!geVehicles.Any())
                 {
                     vtypeRelations = await _repositoryInspectableType.Delete(x => x.VehicleTypeId == idVehicleType);
                     vtype = await _repositoryVehicleType.Delete(x => x.VehicleTypeId == idVehicleType);

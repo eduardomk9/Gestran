@@ -72,24 +72,18 @@ namespace Application.Business
                 string jobTitleUser = geUser.JobTitleUser ?? "";
                 if (jobTitleUser.ToLower().Equals("supervisor"))
                 {
-                    GeInspection? geInspection = await _repositoryInspection.GetById(approveOrRejectDTO.IdInspection);
-                    if (geInspection != null)
+                    GeInspection? geInspection = await _repositoryInspection.GetById(approveOrRejectDTO.IdInspection) ?? throw new ArgumentException("Inspection not found.");
+                    geInspection.EndDate = DateTime.Now;
+                    geInspection.StatusId = approveOrRejectDTO.StatusInspection;
+                    geInspection.Comment += $"\n[{geUser.FirstNameUser}]\n{approveOrRejectDTO.Comment}";
+
+                    GeInspection geInspecUpdResult = await _repositoryInspection.Update(geInspection);
+                    GeVehicle? geVehicle = await _repositoryVehicle.GetById(geInspection.VehicleId ?? 0) ?? throw new ArgumentException("Vehicle not found.");
+                    if (geInspecUpdResult.InspectionId > 0)
                     {
-                        geInspection.EndDate = DateTime.Now;
-                        geInspection.StatusId = approveOrRejectDTO.StatusInspection;
-                        geInspection.Comment += $"\n[{geUser.FirstNameUser}]" +
-                                                $"\n{approveOrRejectDTO.Comment}";
-                        GeInspection geInspecUpdResult = await _repositoryInspection.Update(geInspection);
-                        GeVehicle? geVehicle = await _repositoryVehicle.GetById(geInspection.VehicleId ?? 0);
-                        if (geInspecUpdResult.InspectionId > 0)
-                        {
-                            if (geVehicle != null)
-                            {
-                                geVehicle.IsBeingInspected = false;
-                                GeVehicle updateResult = await _repositoryVehicle.Update(geVehicle);
-                                result = true;
-                            }
-                        }
+                        geVehicle.IsBeingInspected = false;
+                        GeVehicle updateResult = await _repositoryVehicle.Update(geVehicle);
+                        result = true;
                     }
                 }
 

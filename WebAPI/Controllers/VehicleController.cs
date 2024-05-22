@@ -12,15 +12,9 @@ namespace WebAPI.Controllers
     [Authorize(AuthenticationSchemes = "CustomAuth")]
     [Route("[controller]")]
     [ApiController]
-    public class VehicleController : ControllerBase
+    public class VehicleController(IVehicleBusiness vehicleBusiness) : ControllerBase
     {
-        private readonly IVehicleBusiness _vehicleBusiness;
-
-        // Corrigindo a definição do construtor
-        public VehicleController(IVehicleBusiness vehicleBusiness)
-        {
-            _vehicleBusiness = vehicleBusiness;
-        }
+        private readonly IVehicleBusiness _vehicleBusiness = vehicleBusiness;
 
         /// <summary>
         /// Create Vehicle Type
