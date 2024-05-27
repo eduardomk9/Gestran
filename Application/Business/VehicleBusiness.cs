@@ -110,6 +110,28 @@ namespace Application.Business
             }
         }
 
+        public async Task<IEnumerable<GeInspectableType>> GetInspectableByVehichleIdAsync(int id)
+        {
+            try
+            {
+                IEnumerable<GeInspectableType> result = [];
+
+                GeVehicle? vehicle = await _repositoryVehicle.GetById(id);
+
+                if (vehicle != null) {
+                    IEnumerable<GeInspectableType> inspectables = await _repositoryInspectableType.GetAll(x => x.VehicleTypeId == vehicle.VehicleTypeId);
+                    result = inspectables;
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"VehicleBusiness | GetInspectableByVehichleIdAsync | {ex.Message}");
+            }
+        }
+
+
         public async Task<bool> CreateRelationInspectableVehicleTypeAsync(RelationInspectableVehicleTypeDTO relationInspectableVehicleTypeDTOs)
         {
             try

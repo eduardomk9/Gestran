@@ -199,6 +199,36 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
+        /// Get All Inspectable by Vehicle Id
+        /// </summary>
+        /// <remarks>
+        /// This dont method allow anonymous.
+        /// 
+        /// You have to call this method with a token in the header.
+        /// 
+        /// You can call this method to get all Inspectables by vehichle, sou you know what inspectable is needed
+        /// 
+        /// Fill correctly all parameters to call this method.
+        /// 
+        /// </remarks>        
+        /// <param name="model"> entrada</param>
+        [HttpGet("GetAllInspectableByVehicleIdAsync")]
+        [SwaggerResponse(200, "Informações", typeof(IEnumerable<GeInspectable>))]
+        [SwaggerResponse(400, "Erro", typeof(string))]
+        public async Task<IActionResult> GetInspectableByVehicleIdAsync(int model)
+        {
+            try
+            {
+                IEnumerable<GeInspectableType> result = await _vehicleBusiness.GetInspectableByVehichleIdAsync(model);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"VehicleController | GetInspectableByVehicleIdAsync | {ex.Message}");
+            }
+        }
+
+        /// <summary>
         /// Create Relation Inspectable x Vehicle
         /// </summary>
         /// <remarks>
