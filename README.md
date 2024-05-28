@@ -496,7 +496,10 @@ Swagger;</br>
 JWT;</br>
 xUnit;
 
+## 📝 License
+Only for study and non-distributable.
 # [PT-BR]
+
 # Gestran API
 
 ## Descrição
@@ -963,6 +966,7 @@ GO
 
 ```
 </details>
+
 ## 📋 Uso
 O Swagger está pronto para uso. Se você executar o projeto no modo Debug, não será necessário autenticar para chamar outros métodos, mas se você não fizer isso, precisará autenticar com um login e senha. Use o endpoint de criação de usuário para criar um usuário.
 
@@ -996,7 +1000,3 @@ xUnit;
 
 ## 📝 Licença
 Apenas para estudo e não distribuível.
-
-
-## 📝 License
-Only for study and non-distributable.
