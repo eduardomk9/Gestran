@@ -1,5 +1,7 @@
-﻿using Core.Business;
+﻿using Application.Business;
+using Core.Business;
 using Core.DTOs.Inspection;
+using Core.Entities.GenericEnterpise;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -36,8 +38,14 @@ namespace WebAPI.Controllers
             try
             {
                 bool result = await _InspectionBusiness.CreateInspectionAsync(model);
-
-                return Ok(result);
+                if (result)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return StatusCode(412, new { message = "Não foi possível criar a inspeção. Este veículo ja está sendo inspecionado." });
+                }
             }
             catch (Exception ex)
             {
@@ -62,7 +70,7 @@ namespace WebAPI.Controllers
         [HttpPost("CreateInspectionDetailAsync")]
         [SwaggerResponse(200, "Informações", typeof(bool))]
         [SwaggerResponse(400, "Erro", typeof(string))]
-        public async Task<IActionResult> CreateInspectionDetailAsync(InspectionDetailDTO model)
+        public async Task<IActionResult> CreateInspectionDetailAsync(List<InspectionDetailDTO> model)
         {
             try
             {
@@ -132,6 +140,37 @@ namespace WebAPI.Controllers
             catch (Exception ex)
             {
                 return BadRequest($"InspectionController | DeleteInspectionAsync | {ex.Message}");
+            }
+        }
+
+
+        /// <summary>
+        /// Get inspections for a especific inspector
+        /// </summary>
+        /// <remarks>
+        /// This dont method allow anonymous.
+        /// 
+        /// You have to call this method with a token in the header.
+        /// 
+        /// You can call this method to get all Inspectables by vehichle, sou you know what inspectable is needed
+        /// 
+        /// Fill correctly all parameters to call this method.
+        /// 
+        /// </remarks>        
+        /// <param name="model"> entrada</param>
+        [HttpGet("GetInspectionByUserIdAsync")]
+        [SwaggerResponse(200, "Informações", typeof(IEnumerable<GeInspection>))]
+        [SwaggerResponse(400, "Erro", typeof(string))]
+        public async Task<IActionResult> GetInspectionByUserIdAsync(int model)
+        {
+            try
+            {
+                IEnumerable<GeInspection> result = await _InspectionBusiness.GetInspectionByUserIdAsync(model);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"VehicleController | GetInspectionByUserIdAsync | {ex.Message}");
             }
         }
 

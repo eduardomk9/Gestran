@@ -213,13 +213,13 @@ namespace WebAPI.Controllers
         /// </remarks>        
         /// <param name="model"> entrada</param>
         [HttpGet("GetAllInspectableByVehicleIdAsync")]
-        [SwaggerResponse(200, "Informações", typeof(IEnumerable<GeInspectable>))]
+        [SwaggerResponse(200, "Informações", typeof(IList<GeInspectable>))]
         [SwaggerResponse(400, "Erro", typeof(string))]
         public async Task<IActionResult> GetInspectableByVehicleIdAsync(int model)
         {
             try
             {
-                IEnumerable<GeInspectableType> result = await _vehicleBusiness.GetInspectableByVehichleIdAsync(model);
+                IList<GeInspectable> result = await _vehicleBusiness.GetInspectableByVehichleIdAsync(model);
                 return Ok(result);
             }
             catch (Exception ex)

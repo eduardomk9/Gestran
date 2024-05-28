@@ -16,6 +16,6 @@ namespace Core.Business
         Task<IEnumerable<GeInspectable>> GetAllInspectableAsync();
         Task<IEnumerable<GeVehicle>> GetAllVehicleAsync();
         Task<IEnumerable<GeVehicleType>> GetAllVehicleTypeAsync();
-        Task<IEnumerable<GeInspectableType>> GetInspectableByVehichleIdAsync(int id);
+        Task<IList<GeInspectable>> GetInspectableByVehichleIdAsync(int id);
     }
 }

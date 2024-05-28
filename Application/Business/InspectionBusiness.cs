@@ -2,7 +2,9 @@
 using Core.Business;
 using Core.DTOs.Inspection;
 using Core.Entities.GenericEnterpise;
+using Core.Models;
 using Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Business
 {
@@ -46,22 +48,22 @@ namespace Application.Business
                 throw new Exception($"InspectionBusiness | CreateInspectionAsync | {ex.Message}");
             }
         }
-
-        public async Task<bool> CreateInspectionDetailAsync(InspectionDetailDTO inspectionDetailDTO)
+        public async Task<bool> CreateInspectionDetailAsync(List<InspectionDetailDTO> inspectionDetailDTO)
         {
             try
             {
-                GeInspectionDetail geInspectionDetail = _mapper.Map<GeInspectionDetail>(inspectionDetailDTO);
-                int result = await _repositoryInspectionDetail.Create(geInspectionDetail);
+                int inspectionId = inspectionDetailDTO?.FirstOrDefault()?.InspectionId ?? 0;
+                List<GeInspectionDetail> geInspectionDetail = _mapper.Map<List<GeInspectionDetail>>(inspectionDetailDTO);
+                int resultDel = await _repositoryInspectionDetail.Delete(x => x.InspectionId == inspectionId);
+                await _repositoryInspectionDetail.CreateRangeAsync(geInspectionDetail);
 
-                return result == 1;
+                return true;
             }
             catch (Exception ex)
             {
                 throw new Exception($"InspectionBusiness | CreateInspectionDetailAsync | {ex.Message}");
             }
         }
-
         public async Task<bool> ApproveOrRejectInspectionAsync(ApproveOrRejectDTO approveOrRejectDTO)
         {
             try
@@ -110,7 +112,23 @@ namespace Application.Business
                 throw new Exception($"InspectionBusiness | ApproveOrRejectInspectionAsync | {ex.Message}");
             }
         }
+        public async Task<IEnumerable<GeInspection>> GetInspectionByUserIdAsync(int id)
+        {
+            try
+            {
+                IEnumerable<GeInspection> inspections = await _repositoryInspection.GetAll(x => x.InspectorId == id,
+                            includes: query => query
+                            .Include(inspecDetails => inspecDetails.GeInspectionDetails)
+                            .Include(vehicle => vehicle.Vehicle)
+                            .Include(status => status.Status));
 
+                return inspections;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"InspectionBusiness | GetInspectionByUserIdAsync | {ex.Message}");
+            }
+        }
 
     }
 }

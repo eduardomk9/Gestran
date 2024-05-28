@@ -3,6 +3,7 @@ using Core.Business;
 using Core.DTOs.Vehicle;
 using Core.Entities.GenericEnterpise;
 using Core.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Business
 {
@@ -110,17 +111,25 @@ namespace Application.Business
             }
         }
 
-        public async Task<IEnumerable<GeInspectableType>> GetInspectableByVehichleIdAsync(int id)
+        public async Task<IList<GeInspectable>> GetInspectableByVehichleIdAsync(int id)
         {
             try
             {
-                IEnumerable<GeInspectableType> result = [];
+                IEnumerable<GeInspectableType> inspecTypes = [];
+                IList<GeInspectable> result = [];
+
 
                 GeVehicle? vehicle = await _repositoryVehicle.GetById(id);
 
                 if (vehicle != null) {
                     IEnumerable<GeInspectableType> inspectables = await _repositoryInspectableType.GetAll(x => x.VehicleTypeId == vehicle.VehicleTypeId);
-                    result = inspectables;
+                    inspecTypes = inspectables;
+                    foreach (GeInspectableType type in inspectables)
+                    {
+                        GeInspectable? inspectable = await _repositoryInspectable.GetById(type.InspectableId ?? 0);
+                        if (inspectable != null)
+                        result.Add(inspectable);
+                    }
                 }
 
                 return result;
@@ -130,7 +139,6 @@ namespace Application.Business
                 throw new Exception($"VehicleBusiness | GetInspectableByVehichleIdAsync | {ex.Message}");
             }
         }
-
 
         public async Task<bool> CreateRelationInspectableVehicleTypeAsync(RelationInspectableVehicleTypeDTO relationInspectableVehicleTypeDTOs)
         {
